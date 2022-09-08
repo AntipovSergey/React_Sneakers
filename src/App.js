@@ -35,9 +35,23 @@ function App() {
 				</ul>
 			</header>
 			<div className='content p-40'>
-				<h1 className='mb-40'>Все кроссовки</h1>
+				<div className='d-flex justify-between align-center mb-40'>
+					<h1>Все кроссовки</h1>
+					<div className='search-block d-flex align-center'>
+						<img src='img/search.svg' alt='search' width={14} height={14} />
+						<input type='text' placeholder='Поиск...' />
+					</div>
+				</div>
 				<div className='d-flex flex-wrap'>
 					<div className='card mb-50 mr-30'>
+						<div className='favorite'>
+							<img
+								src='/img/not-favorited-item.svg'
+								alt='add to favorites'
+								width={30}
+								height={30}
+							/>
+						</div>
 						<img
 							src='img/sneakers/1.jpg'
 							alt='sneakers'
@@ -61,6 +75,14 @@ function App() {
 						</div>
 					</div>
 					<div className='card mb-50 mr-30'>
+						<div className='favorite'>
+							<img
+								src='/img/not-favorited-item.svg'
+								alt='add to favorites'
+								width={30}
+								height={30}
+							/>
+						</div>
 						<img
 							src='img/sneakers/2.jpg'
 							alt='sneakers'
@@ -84,6 +106,14 @@ function App() {
 						</div>
 					</div>
 					<div className='card mb-50 mr-30'>
+						<div className='favorite'>
+							<img
+								src='/img/not-favorited-item.svg'
+								alt='add to favorites'
+								width={30}
+								height={30}
+							/>
+						</div>
 						<img
 							src='img/sneakers/3.jpg'
 							alt='sneakers'
@@ -107,6 +137,14 @@ function App() {
 						</div>
 					</div>
 					<div className='card mb-50 mr-30'>
+						<div className='favorite'>
+							<img
+								src='/img/not-favorited-item.svg'
+								alt='add to favorites'
+								width={30}
+								height={30}
+							/>
+						</div>
 						<img
 							src='img/sneakers/4.jpg'
 							alt='sneakers'
