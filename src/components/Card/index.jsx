@@ -1,9 +1,12 @@
 import React from 'react';
+import styles from './Card.module.scss';
 
-function Card({ title, price, imageUrl }) {
+const { card, favorite } = styles;
+
+function Card({ title, price, imageUrl, onClickPlus }) {
 	return (
-		<div className='card mb-50 mr-30'>
-			<div className='favorite'>
+		<div className={card}>
+			<div className={favorite}>
 				<img
 					src='/img/not-favorited-item.svg'
 					alt='add to favorites'
@@ -18,7 +21,7 @@ function Card({ title, price, imageUrl }) {
 					<span>Цена:</span>
 					<b>{price} руб.</b>
 				</div>
-				<button className='button'>
+				<button className='button' onClick={onClickPlus}>
 					<img src='img/not-added-item.svg' alt='plus' width={32} height={32} />
 				</button>
 			</div>
