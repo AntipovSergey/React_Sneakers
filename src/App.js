@@ -7,6 +7,7 @@ import Header from './components/Header';
 function App() {
 	const [items, setItems] = useState([]);
 	const [cartItems, setCartItems] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
 	const [cartOpened, setCartOpened] = useState(false);
 
 	useEffect(() => {
@@ -23,29 +24,54 @@ function App() {
 		setCartItems(prev => [...prev, obj]);
 	};
 
+	const onChangeSearchInput = event => {
+		setSearchValue(event.target.value);
+	};
+
 	return (
 		<div className='wrapper clear'>
 			{cartOpened && <Drawer handleCart={handleCart} items={cartItems} />}
 			<Header handleCart={handleCart} />
 			<div className='content p-40'>
 				<div className='d-flex justify-between align-center mb-40'>
-					<h1>Все кроссовки</h1>
+					<h1>
+						{searchValue ? `Поиск по: "${searchValue}"` : 'Все кроссовки'}
+					</h1>
 					<div className='search-block d-flex align-center'>
 						<img src='img/search.svg' alt='search' width={14} height={14} />
-						<input type='text' placeholder='Поиск...' />
+						{searchValue && (
+							<img
+								className='clear cu-p'
+								src='img/close.svg'
+								alt='close'
+								width={22}
+								height={22}
+								onClick={() => setSearchValue('')}
+							/>
+						)}
+						<input
+							type='text'
+							placeholder='Поиск...'
+							onChange={onChangeSearchInput}
+							value={searchValue}
+						/>
 					</div>
 				</div>
 				<div className='d-flex flex-wrap'>
-					{items.map((item, index) => (
-						<Card
-							key={index}
-							title={item.title}
-							price={item.price}
-							imageUrl={item.imageUrl}
-							onFavorite={() => console.log('Добавили в закладки')}
-							onPlus={item => onAddToCart(item)}
-						/>
-					))}
+					{items
+						.filter(({ title }) =>
+							title.toLowerCase().includes(searchValue.toLowerCase())
+						)
+						.map(item => (
+							<Card
+								key={item.imageUrl}
+								title={item.title}
+								price={item.price}
+								imageUrl={item.imageUrl}
+								onFavorite={() => console.log('Добавили в закладки')}
+								onPlus={item => onAddToCart(item)}
+							/>
+						))}
 				</div>
 			</div>
 		</div>
