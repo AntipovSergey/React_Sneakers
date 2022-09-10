@@ -6,21 +6,26 @@ import Header from './components/Header';
 
 function App() {
 	const [items, setItems] = useState([]);
+	const [cartItems, setCartItems] = useState([]);
 	const [cartOpened, setCartOpened] = useState(false);
 
 	useEffect(() => {
 		axios
 			.get('https://631c45691b470e0e12fdff37.mockapi.io/items')
-			.then(({ data }) => setItems(data));
+			.then(({ data: items }) => setItems(items));
 	}, []);
 
 	const handleCart = () => {
 		setCartOpened(!cartOpened);
 	};
 
+	const onAddToCart = obj => {
+		setCartItems(prev => [...prev, obj]);
+	};
+
 	return (
 		<div className='wrapper clear'>
-			{cartOpened && <Drawer handleCart={handleCart} />}
+			{cartOpened && <Drawer handleCart={handleCart} items={cartItems} />}
 			<Header handleCart={handleCart} />
 			<div className='content p-40'>
 				<div className='d-flex justify-between align-center mb-40'>
@@ -31,14 +36,14 @@ function App() {
 					</div>
 				</div>
 				<div className='d-flex flex-wrap'>
-					{items.map((obj, index) => (
+					{items.map((item, index) => (
 						<Card
 							key={index}
-							title={obj.title}
-							price={obj.price}
-							imageUrl={obj.imageUrl}
+							title={item.title}
+							price={item.price}
+							imageUrl={item.imageUrl}
 							onFavorite={() => console.log('Добавили в закладки')}
-							onPlus={() => console.log('Добавили в корзину')}
+							onPlus={item => onAddToCart(item)}
 						/>
 					))}
 				</div>
