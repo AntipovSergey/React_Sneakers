@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Card from './components/Card';
 import Drawer from './components/Drawer';
 import Header from './components/Header';
@@ -25,10 +26,17 @@ function App() {
 			imageUrl: '/img/sneakers/4.jpg',
 		},
 	];
+
+	const [cartOpened, setCartOpened] = useState(false);
+
+	const handleCart = () => {
+		setCartOpened(!cartOpened);
+	};
+
 	return (
 		<div className='wrapper clear'>
-			<Drawer />
-			<Header />
+			{cartOpened && <Drawer handleCart={handleCart} />}
+			<Header handleCart={handleCart} />
 			<div className='content p-40'>
 				<div className='d-flex justify-between align-center mb-40'>
 					<h1>Все кроссовки</h1>

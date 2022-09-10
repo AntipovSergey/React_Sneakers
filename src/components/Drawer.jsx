@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Drawer() {
+function Drawer({ handleCart }) {
 	return (
-		<div style={{ display: 'none' }} className='overlay'>
+		<div className='overlay'>
 			<div className='drawer'>
 				<div className='d-flex justify-between'>
 					<h2 className='mb-30'>Корзина</h2>
@@ -12,6 +12,7 @@ function Drawer() {
 						alt='close'
 						width={32}
 						height={32}
+						onClick={handleCart}
 					/>
 				</div>
 				<div className='items'>
