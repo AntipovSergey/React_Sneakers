@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Card from './components/Card';
+import { Route, Routes } from 'react-router-dom';
 import Drawer from './components/Drawer';
 import Header from './components/Header';
+import Favorites from './pages/Favorites';
+import Home from './pages/Home';
 
 function App() {
 	const [items, setItems] = useState([]);
 	const [cartItems, setCartItems] = useState([]);
+	const [favorites, setFavorites] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [cartOpened, setCartOpened] = useState(false);
 
@@ -18,6 +21,10 @@ function App() {
 		axios
 			.get('https://631c45691b470e0e12fdff37.mockapi.io/cart')
 			.then(({ data: items }) => setCartItems(items));
+
+		axios
+			.get('https://631c45691b470e0e12fdff37.mockapi.io/favorites')
+			.then(({ data: items }) => setFavorites(items));
 	}, []);
 
 	const handleCart = () => {
@@ -39,6 +46,25 @@ function App() {
 		setCartItems(prev => prev.filter(item => item.id !== id));
 	};
 
+	const onAddToFavorite = async obj => {
+		try {
+			if (favorites.find(favObj => favObj.id === obj.id)) {
+				axios.delete(
+					`https://631c45691b470e0e12fdff37.mockapi.io/favorites/${obj.id}`
+				);
+				setFavorites(prev => prev.filter(item => item.id !== obj.id));
+			} else {
+				const { data } = await axios.post(
+					'https://631c45691b470e0e12fdff37.mockapi.io/favorites',
+					obj
+				);
+				setFavorites(prev => [...prev, data]);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const onChangeSearchInput = event => {
 		setSearchValue(event.target.value);
 	};
@@ -53,48 +79,32 @@ function App() {
 				/>
 			)}
 			<Header handleCart={handleCart} />
-			<div className='content p-40'>
-				<div className='d-flex justify-between align-center mb-40'>
-					<h1>
-						{searchValue ? `Поиск по: "${searchValue}"` : 'Все кроссовки'}
-					</h1>
-					<div className='search-block d-flex align-center'>
-						<img src='img/search.svg' alt='search' width={14} height={14} />
-						{searchValue && (
-							<img
-								className='clear cu-p'
-								src='img/close.svg'
-								alt='close'
-								width={22}
-								height={22}
-								onClick={() => setSearchValue('')}
-							/>
-						)}
-						<input
-							type='text'
-							placeholder='Поиск...'
-							onChange={onChangeSearchInput}
-							value={searchValue}
+			<Routes>
+				<Route
+					path='/'
+					exact
+					element={
+						<Home
+							items={items}
+							searchValue={searchValue}
+							setSearchValue={setSearchValue}
+							onChangeSearchInput={onChangeSearchInput}
+							onAddToFavorite={onAddToFavorite}
+							onAddToCart={onAddToCart}
 						/>
-					</div>
-				</div>
-				<div className='d-flex flex-wrap'>
-					{items
-						.filter(({ title }) =>
-							title.toLowerCase().includes(searchValue.toLowerCase())
-						)
-						.map(item => (
-							<Card
-								key={item.imageUrl}
-								title={item.title}
-								price={item.price}
-								imageUrl={item.imageUrl}
-								onFavorite={() => console.log('Добавили в закладки')}
-								onPlus={item => onAddToCart(item)}
-							/>
-						))}
-				</div>
-			</div>
+					}
+				/>
+				<Route
+					path='/favorites'
+					exact
+					element={
+						<Favorites
+							favorites={favorites}
+							onAddToFavorite={onAddToFavorite}
+						/>
+					}
+				/>
+			</Routes>
 		</div>
 	);
 }

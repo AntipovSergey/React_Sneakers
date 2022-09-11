@@ -3,23 +3,41 @@ import styles from './Card.module.scss';
 
 const { card, favorite } = styles;
 
-function Card({ title, price, imageUrl, onPlus, onFavorite }) {
+function Card({
+	id,
+	title,
+	price,
+	imageUrl,
+	onPlus,
+	onFavorite,
+	favorited = false,
+}) {
 	const [isAdded, setIsAdded] = useState(false);
+	const [isFavorite, setIsFavorite] = useState(favorited);
 
 	const onClickPlus = () => {
 		onPlus({ title, price, imageUrl });
 		setIsAdded(!isAdded);
 	};
 
+	const onClickFavorite = () => {
+		onFavorite({ id, title, price, imageUrl });
+		setIsFavorite(!isFavorite);
+	};
+
 	return (
 		<div className={card}>
 			<div className={favorite}>
 				<img
-					src='/img/not-favorited-item.svg'
+					src={
+						isFavorite
+							? '/img/favorited-item.svg'
+							: '/img/not-favorited-item.svg'
+					}
 					alt='add to favorites'
 					width={30}
 					height={30}
-					onClick={onFavorite}
+					onClick={onClickFavorite}
 				/>
 			</div>
 			<img src={imageUrl} alt='sneakers' width={133} height={112} />
