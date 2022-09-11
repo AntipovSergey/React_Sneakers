@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Drawer({ handleCart, items = [] }) {
+function Drawer({ handleCart, items = [], onRemoveItem }) {
 	return (
 		<div className='overlay'>
 			<div className='drawer'>
@@ -27,7 +27,13 @@ function Drawer({ handleCart, items = [] }) {
 								<b>{price} руб.</b>
 							</div>
 							<button className='button removeBtn'>
-								<img src='/img/close.svg' alt='close' width={32} height={32} />
+								<img
+									onClick={() => onRemoveItem(id)}
+									src='/img/close.svg'
+									alt='close'
+									width={32}
+									height={32}
+								/>
 							</button>
 						</div>
 					))}

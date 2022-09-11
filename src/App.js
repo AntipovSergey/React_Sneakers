@@ -14,14 +14,29 @@ function App() {
 		axios
 			.get('https://631c45691b470e0e12fdff37.mockapi.io/items')
 			.then(({ data: items }) => setItems(items));
+
+		axios
+			.get('https://631c45691b470e0e12fdff37.mockapi.io/cart')
+			.then(({ data: items }) => setCartItems(items));
 	}, []);
 
 	const handleCart = () => {
 		setCartOpened(!cartOpened);
+		if (cartOpened) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'visible';
+		}
 	};
 
 	const onAddToCart = obj => {
+		axios.post('https://631c45691b470e0e12fdff37.mockapi.io/cart', obj);
 		setCartItems(prev => [...prev, obj]);
+	};
+
+	const onRemoveItem = id => {
+		axios.delete(`https://631c45691b470e0e12fdff37.mockapi.io/cart/${id}`);
+		// setCartItems(prev => [...prev, obj]);
 	};
 
 	const onChangeSearchInput = event => {
@@ -30,7 +45,13 @@ function App() {
 
 	return (
 		<div className='wrapper clear'>
-			{cartOpened && <Drawer handleCart={handleCart} items={cartItems} />}
+			{cartOpened && (
+				<Drawer
+					handleCart={handleCart}
+					items={cartItems}
+					onRemoveItem={onRemoveItem}
+				/>
+			)}
 			<Header handleCart={handleCart} />
 			<div className='content p-40'>
 				<div className='d-flex justify-between align-center mb-40'>
