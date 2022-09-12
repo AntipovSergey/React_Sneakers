@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../App';
+import Info from './Info';
+import axios from 'axios';
+
+const delay = () =>
+	new Promise((resolve, reject) => {
+		setTimeout(resolve, 1000);
+	});
 
 function Drawer({ handleCart, items = [], onRemoveItem }) {
+	const { setCartItems, cartItems } = useContext(AppContext);
+	const [isOrderCompleted, setIsOrderCompleted] = useState(false);
+	const [orderId, setOrderId] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const onClickOrder = async () => {
+		try {
+			setIsLoading(true);
+			const { data } = await axios.post(
+				'https://631c45691b470e0e12fdff37.mockapi.io/orders',
+				{ items: cartItems }
+			);
+
+			setOrderId(data.id);
+			setIsOrderCompleted(true);
+			setCartItems([]);
+
+			for (let i = 0; i < cartItems.length; i++) {
+				const item = cartItems[i];
+				await axios.delete(
+					`https://631c45691b470e0e12fdff37.mockapi.io/cart/${item.id}`
+				);
+				await delay();
+			}
+		} catch (error) {
+			alert('Ошибка при создании заказа', error);
+		}
+		setIsLoading(false);
+	};
+
 	return (
 		<div className='overlay'>
 			<div className='drawer'>
@@ -16,7 +54,7 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 					/>
 				</div>
 				{items.length > 0 ? (
-					<div className='flex d-flex flex-column'>
+					<div className='itemsWrapper flex d-flex flex-column'>
 						<div className='items flex'>
 							{items.map(obj => (
 								<div
@@ -56,8 +94,12 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 									<b>1074 руб. </b>
 								</li>
 							</ul>
-							<button className='greenButton button'>
-								Оформить заказ{' '}
+							<button
+								disabled={isLoading}
+								className='greenButton button'
+								onClick={onClickOrder}
+							>
+								Оформить заказ
 								<img
 									src='/img/arrow.svg'
 									alt='arrow'
@@ -68,22 +110,19 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 						</div>
 					</div>
 				) : (
-					<div className='cartEmpty d-flex align-center justify-center flex-column flex'>
-						<img
-							className='mb-20'
-							width={120}
-							height={120}
-							src='/img/empty-cart.jpg'
-							alt='empty cart'
-						/>
-						<p className='opacity-6'>
-							Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ
-						</p>
-						<button onClick={handleCart} className='greenButton button'>
-							<img src='/img/arrow.svg' alt='arrow' />
-							Вернуться назад
-						</button>
-					</div>
+					<Info
+						image={
+							isOrderCompleted
+								? '/img/success-order.jpg'
+								: '/img/empty-cart.jpg'
+						}
+						title={isOrderCompleted ? 'Заказ оформлен!' : 'Корзина пустая'}
+						description={
+							isOrderCompleted
+								? `Ваш заказ #${orderId} скоро будет передан курьерской доставке`
+								: 'Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ'
+						}
+					/>
 				)}
 			</div>
 		</div>
