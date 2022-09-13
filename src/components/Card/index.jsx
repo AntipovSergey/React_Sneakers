@@ -19,12 +19,14 @@ function Card({
 
 	const [isFavorite, setIsFavorite] = useState(favorited);
 
+	const obj = { id, parentId: id, title, price, imageUrl };
+
 	const onClickPlus = () => {
-		onPlus({ id, title, price, imageUrl });
+		onPlus(obj);
 	};
 
 	const onClickFavorite = () => {
-		onFavorite({ id, title, price, imageUrl });
+		onFavorite(obj);
 		setIsFavorite(!isFavorite);
 	};
 
