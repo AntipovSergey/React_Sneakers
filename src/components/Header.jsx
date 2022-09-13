@@ -13,7 +13,7 @@ function Header() {
 				<div className='d-flex align-center cu-p'>
 					<img
 						className='mr-15'
-						src='/img/logo.png'
+						src='img/logo.png'
 						alt='logo'
 						width={40}
 						height={40}

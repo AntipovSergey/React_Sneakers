@@ -52,7 +52,7 @@ function Drawer({ handleCart, items = [], onRemoveItem, opened }) {
 					<h2 className='mb-30'>Корзина</h2>
 					<img
 						className='cu-p'
-						src='/img/close.svg'
+						src='img/close.svg'
 						alt='close'
 						width={32}
 						height={32}
@@ -78,7 +78,7 @@ function Drawer({ handleCart, items = [], onRemoveItem, opened }) {
 									<button className='button removeBtn'>
 										<img
 											onClick={() => onRemoveItem(obj.id)}
-											src='/img/close.svg'
+											src='img/close.svg'
 											alt='close'
 											width={32}
 											height={32}
@@ -107,7 +107,7 @@ function Drawer({ handleCart, items = [], onRemoveItem, opened }) {
 							>
 								Оформить заказ
 								<img
-									src='/img/arrow.svg'
+									src='img/arrow.svg'
 									alt='arrow'
 									width={14}
 									height={12}
@@ -118,9 +118,7 @@ function Drawer({ handleCart, items = [], onRemoveItem, opened }) {
 				) : (
 					<Info
 						image={
-							isOrderCompleted
-								? '/img/success-order.jpg'
-								: '/img/empty-cart.jpg'
+							isOrderCompleted ? 'img/success-order.jpg' : 'img/empty-cart.jpg'
 						}
 						title={isOrderCompleted ? 'Заказ оформлен!' : 'Корзина пустая'}
 						description={

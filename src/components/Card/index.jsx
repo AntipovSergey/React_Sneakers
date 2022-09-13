@@ -54,8 +54,8 @@ function Card({
 							<img
 								src={
 									isFavorite
-										? '/img/favorited-item.svg'
-										: '/img/not-favorited-item.svg'
+										? 'img/favorited-item.svg'
+										: 'img/not-favorited-item.svg'
 								}
 								alt='add to favorites'
 								width={30}
