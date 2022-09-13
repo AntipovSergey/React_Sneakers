@@ -126,7 +126,7 @@ function App() {
 						onRemoveItem={onRemoveItem}
 					/>
 				)}
-				<Header handleCart={handleCart} />
+				<Header />
 				<Routes>
 					<Route
 						path='/'

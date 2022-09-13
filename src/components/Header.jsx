@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../App';
 
-function Header({ handleCart }) {
+function Header() {
+	const { cartItems, handleCart } = useContext(AppContext);
+	const totalPrice = cartItems.reduce((acc, obj) => acc + obj.price, 0);
+
 	return (
 		<header className='d-flex justify-between align-center p-40'>
 			<Link to={'/'}>
@@ -28,7 +32,7 @@ function Header({ handleCart }) {
 						width={18}
 						height={17}
 					/>
-					<span>1205 руб.</span>
+					<span>{totalPrice} руб.</span>
 				</li>
 				<Link to={'favorites'}>
 					<li className='mr-30'>
