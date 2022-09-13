@@ -121,13 +121,12 @@ function App() {
 			}}
 		>
 			<div className='wrapper clear'>
-				{cartOpened && (
-					<Drawer
-						handleCart={handleCart}
-						items={cartItems}
-						onRemoveItem={onRemoveItem}
-					/>
-				)}
+				<Drawer
+					handleCart={handleCart}
+					items={cartItems}
+					onRemoveItem={onRemoveItem}
+					opened={cartOpened}
+				/>
 				<Header />
 				<Routes>
 					<Route

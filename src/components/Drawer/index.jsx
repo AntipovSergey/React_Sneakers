@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import Info from './Info';
+import Info from '../Info';
 import axios from 'axios';
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../../hooks/useCart';
+
+import styles from './Drawer.module.scss';
 
 const delay = () =>
 	new Promise((resolve, reject) => {
 		setTimeout(resolve, 1000);
 	});
 
-function Drawer({ handleCart, items = [], onRemoveItem }) {
-	// const { setCartItems, cartItems } = useContext(AppContext);
+function Drawer({ handleCart, items = [], onRemoveItem, opened }) {
 	const { cartItems, setCartItems, totalPrice } = useCart();
 	const [isOrderCompleted, setIsOrderCompleted] = useState(false);
 	const [orderId, setOrderId] = useState(null);
@@ -41,8 +42,12 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 	};
 
 	return (
-		<div className='overlay'>
-			<div className='drawer'>
+		<div
+			className={`${styles.overlay} ${
+				opened ? styles.overlayVisible : styles.overlay
+			}`}
+		>
+			<div className={styles.drawer}>
 				<div className='d-flex justify-between'>
 					<h2 className='mb-30'>Корзина</h2>
 					<img
@@ -55,16 +60,16 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 					/>
 				</div>
 				{items.length > 0 ? (
-					<div className='itemsWrapper flex d-flex flex-column'>
-						<div className='items flex'>
+					<div className={`${styles.itemsWrapper} flex d-flex flex-column`}>
+						<div className={`${styles.items} flex`}>
 							{items.map(obj => (
 								<div
-									className='cartItem d-flex align-center mb-20'
+									className={`${styles.cartItem} d-flex align-center mb-20`}
 									key={obj.title}
 								>
 									<div
 										style={{ backgroundImage: `url(${obj.imageUrl})` }}
-										className='cartItemImg'
+										className={styles.cartItemImg}
 									></div>
 									<div className='mr-20 flex'>
 										<p className='mb-5'>{obj.title}</p>
@@ -82,7 +87,7 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 								</div>
 							))}
 						</div>
-						<div className='cartTotalBlock'>
+						<div className={styles.cartTotalBlock}>
 							<ul>
 								<li>
 									<span>Итого:</span>
@@ -97,7 +102,7 @@ function Drawer({ handleCart, items = [], onRemoveItem }) {
 							</ul>
 							<button
 								disabled={isLoading}
-								className='greenButton button'
+								className={`${styles.greenButton} button`}
 								onClick={onClickOrder}
 							>
 								Оформить заказ
