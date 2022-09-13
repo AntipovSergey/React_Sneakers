@@ -46,15 +46,17 @@ function Header() {
 						/>
 					</li>
 				</Link>
-				<li>
-					<img
-						className='cu-p'
-						src='img/profile.svg'
-						alt='profile'
-						width={20}
-						height={20}
-					/>
-				</li>
+				<Link to={'orders'}>
+					<li>
+						<img
+							className='cu-p'
+							src='img/profile.svg'
+							alt='profile'
+							width={20}
+							height={20}
+						/>
+					</li>
+				</Link>
 			</ul>
 		</header>
 	);

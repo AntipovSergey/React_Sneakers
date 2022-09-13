@@ -5,6 +5,7 @@ import Drawer from './components/Drawer';
 import Header from './components/Header';
 import Favorites from './pages/Favorites';
 import Home from './pages/Home';
+import Orders from './pages/Orders';
 
 export const AppContext = createContext({});
 
@@ -116,6 +117,7 @@ function App() {
 				onAddToFavorite,
 				handleCart,
 				setCartItems,
+				onAddToCart,
 			}}
 		>
 			<div className='wrapper clear'>
@@ -145,6 +147,7 @@ function App() {
 						}
 					/>
 					<Route path='/favorites' exact element={<Favorites />} />
+					<Route path='/orders' exact element={<Orders />} />
 				</Routes>
 			</div>
 		</AppContext.Provider>
